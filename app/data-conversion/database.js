@@ -3,18 +3,18 @@ var Writable = require('stream').Writable;
 
 
 var exports = module.exports = {};
-exports.MongoWriter = MongoWriter;
+exports.MongoCollectionWriter = MongoCollectionWriter;
 
 
-function MongoWriter(collection) {
+function MongoCollectionWriter(collection) {
     Writable.call(this, {
         objectMode: true
     });
     this.collection = collection;
 }
-util.inherits(MongoWriter, Writable);
+util.inherits(MongoCollectionWriter, Writable);
 
-MongoWriter.prototype._write = function (message, enc, next) {
+MongoCollectionWriter.prototype._write = function (message, enc, next) {
     this.collection.insert(message, function(err) {
         if (err) {
             return next(err);
@@ -23,6 +23,6 @@ MongoWriter.prototype._write = function (message, enc, next) {
     });
 };
 
-MongoWriter.prototype.end = function () {
+MongoCollectionWriter.prototype.end = function () {
     this.emit('end');
 };
