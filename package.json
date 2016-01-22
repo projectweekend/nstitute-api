@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "nstitute-api",
+  "version": "1.0.0",
+  "description": "Web API for N-Sider",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/n-sider/nstitute-api.git"
+  },
+  "author": "Brian Hines",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n-sider/nstitute-api/issues"
+  },
+  "homepage": "https://github.com/n-sider/nstitute-api#readme",
+  "dependencies": {
+    "mongodb": "^2.1.4",
+    "restify": "4.0.3"
+  }
+}
