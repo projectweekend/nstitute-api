@@ -1,14 +1,14 @@
 mongo:
     image: mongo
-    volumes:
-        - ./data-conversion:/data-conversion
 app:
     build: .
     command: node server.js
     volumes:
         - ./package.json:/src/package.json
         - ./server.js:/src/server.js
+        - ./import_archive_data.js:/src/import_archive_data.js
         - ./app:/src/app
+        - ./data-conversion:/src/data-conversion
     ports:
         - "3000:3000"
     links:
