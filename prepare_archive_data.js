@@ -5,13 +5,13 @@ var config = require('./app/config');
 
 async.waterfall([
     connectToMongo,
-    getArchiveArticlesCursor,
-    addPagesToArticles
+    addDetailsToArticles
 ], function(err, data) {
     if (err) {
         console.log(err);
         process.exit(1);
     }
+    console.log('ALL DONE!');
     process.exit(0);
 });
 
@@ -25,7 +25,44 @@ function connectToMongo(done) {
     });
 }
 
-function getArchiveArticlesCursor(db, done) {
+
+function addDetailsToArticles(db, done) {
+    var archiveArticlesCursor = getArchiveArticlesCursor(db);
+    archiveArticlesCursor.forEach(function(article) {
+        // add pages to articles
+        article.pages = [];
+        var articlePages = getArchiveArticlePagesForByID(db, article.nsider_id);
+        articlePages.forEach(function(page) {
+            article.pages.push(page);
+        });
+
+        // find author xref for article
+        var authorsXref = getArchiveArticleAuthorsXrefByID(db, article.nsider_id);
+
+        // add staff to article for xref
+        article.staff = [];
+        authorsXref.forEach(function(xref) {
+            var staff = getArchiveStaffByID(xref.nsider_staff_id);
+            staff.forEach(function(s) {
+                s.display_order = xref.display_order;
+                s.contributor = xref.contributor;
+                article.staff.push(s);
+            });
+        });
+
+        // add prepared article to new collection
+        var newArticlesCollection = db.collection('nsider_archive');
+        newArticlesCollection.insert(article, function(err, doc) {
+            if (err) {
+                return done(err);
+            }
+            return done(null, db);
+        });
+    });
+}
+
+
+function getArchiveArticlesCursor(db) {
     var archiveAtricles = db.collection('staging_archive_nsider').find().project({
         nsider_id: 1,
         title: 1,
@@ -43,37 +80,56 @@ function getArchiveArticlesCursor(db, done) {
         last_modified_by: 1,
         deleted: 1
     });
-    return done(null, db, archiveAtricles);
+    return archiveAtricles;
 }
 
-function addPagesToArticles(db, archiveArticlesCursor, done) {
-    var articlePagesCollection = db.collection('staging_archive_nsider_pages');
-    var newArticlesCollection = db.collection('nsider_archive');
-    archiveArticlesCursor.forEach(function(article) {
-        article.pages = [];
-        var articlePages = articlePagesCollection.find({
-            nsider_id: article.nsider_id
-        }).project({
-            nsider_page_id: 1,
-            nsider_id: 1,
-            page_num: 1,
-            page_content: 1,
-            sidebar_content: 1,
-            date_created: 1,
-            date_updated: 1,
-            last_modified_by: 1,
-            deleted: 1
-        }).sort({
-            page_num: 1
-        });
-        articlePages.forEach(function(page) {
-            article.pages.push(page);
-        });
-        newArticlesCollection.insert(article, function(err, doc) {
-            if (err) {
-                return done(err);
-            }
-            return done(null);
-        });
+
+function getArchiveArticlePagesForByID(db, nsiderID) {
+    var articlePages = db.collection('staging_archive_nsider_pages').find({
+        nsider_id: nsiderID
+    }).project({
+        nsider_page_id: 1,
+        nsider_id: 1,
+        page_num: 1,
+        page_content: 1,
+        sidebar_content: 1,
+        date_created: 1,
+        date_updated: 1,
+        last_modified_by: 1,
+        deleted: 1
+    }).sort({
+        page_num: 1
     });
+    return articlePages;
+}
+
+
+function getArchiveArticleAuthorsXrefByID(db, nsiderID) {
+    var authorsXref = db.collection('staging_archive_nsider_authors').find({
+        nsider_id: nsiderID
+    }).project({
+        nsider_id: 1,
+        nsider_staff_id: 1,
+        display_order: 1,
+        contributor: 1
+    }).sort({
+        display_order: 1
+    });
+    return authorsXref;
+}
+
+
+function getArchiveStaffByID(db, nsiderStaffID) {
+    var staff = db.collection('staging_archive_staff').find({
+        nsider_staff_id: nsiderStaffID
+    }).project({
+        nsider_staff_id: 1,
+        first_name: 1,
+        last_name: 1,
+        date_created: 1,
+        date_updated: 1,
+        last_modified_by: 1,
+        deleted: 1
+    });
+    return staff;
 }
