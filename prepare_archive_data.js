@@ -28,7 +28,8 @@ var addPagesQueue = async.queue(function(task, done) {
         var update = {$set:{pages: pages}};
         newArticles.findOneAndUpdate(filter, update, function(err) {
             if (err) {
-                return done(err);
+                console.log('Error adding pages to article');
+                process.exit(3);
             }
             return done();
         });
@@ -43,7 +44,8 @@ var newArticleQueue = async.queue(function(task, done) {
     var newArticles = task.db.collection('nsider_archive');
     newArticles.insert(task.article, function(err) {
         if (err) {
-            return done(err);
+            console.log('Error adding article');
+            process.exit(2);
         }
         var nextTask = {
             db: task.db,
