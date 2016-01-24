@@ -1,5 +1,6 @@
 var fs = require('fs');
 var csv = require('fast-csv');
+var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
 var config = require('./app/config');
 var MongoCollectionWriter = require('./app/data-conversion/database').MongoCollectionWriter;
@@ -45,20 +46,23 @@ var inputFiles = [
 ];
 
 MongoClient.connect(config.mongoURL, function(err, db) {
-    inputFiles.forEach(function(item, index) {
+    async.forEach(inputFiles, function(item, done) {
         var collection = db.collection(item.mongoCollection);
         collection.createIndex(item.mongoUniqueIndex, {unique: true});
         var mongoCollectionWriter = new MongoCollectionWriter(collection);
         mongoCollectionWriter.on('end', function(data) {
             console.log(item.mongoCollection + ': DONE');
-            if (index === (inputFiles.length - 1)) {
-                process.exit(0);
-            }
+            done();
         });
         mongoCollectionWriter.on('error', function(err) {
-            console.log(err);
-            process.exit(1);
+            done(err);
         });
         item.fileStream.pipe(item.csvStream).pipe(mongoCollectionWriter);
+    }, function(err) {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+        process.exit(0);
     });
 });
