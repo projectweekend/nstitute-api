@@ -1,7 +1,7 @@
 var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
 var config = require('./app/config');
-var ConversionManager = require('./app/data-conversion/archive-converter').ConversionManager;
+var ConversionManager = require('./data-conversion/utils/archive-converter').ConversionManager;
 
 
 MongoClient.connect(config.mongoURL, function(err, db) {

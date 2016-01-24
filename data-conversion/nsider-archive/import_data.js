@@ -2,8 +2,8 @@ var fs = require('fs');
 var csv = require('fast-csv');
 var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
-var config = require('./app/config');
-var MongoCollectionWriter = require('./app/data-conversion/database').MongoCollectionWriter;
+var config = require('./data-conversion/config');
+var MongoCollectionWriter = require('./data-conversion/utils/database').MongoCollectionWriter;
 
 var csvConfig = {
     objectMode: true,
@@ -16,7 +16,7 @@ var inputFiles = [
         mongoUniqueIndex: {
             xref_id: 1
         },
-        fileStream: fs.createReadStream('./data-conversion/archive_nsider_authors.csv'),
+        fileStream: fs.createReadStream('./data-conversion/csv/archive_nsider_authors.csv'),
         csvStream: csv(csvConfig)
     },
     {
@@ -24,7 +24,7 @@ var inputFiles = [
         mongoUniqueIndex: {
             nsider_page_id: 1
         },
-        fileStream: fs.createReadStream('./data-conversion/archive_nsider_pages.csv'),
+        fileStream: fs.createReadStream('./data-conversion/csv/archive_nsider_pages.csv'),
         csvStream: csv(csvConfig)
     },
     {
@@ -32,7 +32,7 @@ var inputFiles = [
         mongoUniqueIndex: {
             nsider_staff_id: 1
         },
-        fileStream: fs.createReadStream('./data-conversion/archive_nsider_staff.csv'),
+        fileStream: fs.createReadStream('./data-conversion/csv/archive_nsider_staff.csv'),
         csvStream: csv(csvConfig)
     },
     {
@@ -40,7 +40,7 @@ var inputFiles = [
         mongoUniqueIndex: {
             nsider_id: 1
         },
-        fileStream: fs.createReadStream('./data-conversion/archive_nsider.csv'),
+        fileStream: fs.createReadStream('./data-conversion/csv/archive_nsider.csv'),
         csvStream: csv(csvConfig)
     }
 ];

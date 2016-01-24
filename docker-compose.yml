@@ -6,11 +6,13 @@ app:
     volumes:
         - ./package.json:/src/package.json
         - ./server.js:/src/server.js
-        - ./import_archive_data.js:/src/import_archive_data.js
-        - ./prepare_archive_data.js:/src/prepare_archive_data.js
-        - ./check_archive_data.js:/src/check_archive_data.js
         - ./app:/src/app
+        # Data conversion stuff
         - ./data-conversion:/src/data-conversion
+        - ./data-conversion/nsider-archive/import_data.js:/src/import_data.js
+        - ./data-conversion/nsider-archive/convert_data.js:/src/convert_data.js
+        - ./data-conversion/nsider-archive/check_data.js:/src/check_data.js
+
     ports:
         - "3000:3000"
     links:
