@@ -1,7 +1,51 @@
 var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
 var config = require('./app/config');
-var ConversionManager = require('./data-conversion/utils/archive-converter').ConversionManager;
+var PagesQueue = require('./data-conversion/utils/archive-pages-queue').PagesQueue;
+var XrefQueue = require('./data-conversion/utils/archive-xref-queue').XrefQueue;
+var AuthorsQueue = require('./data-conversion/utils/archive-authors-queue').AuthorsQueue;
+var InsertQueue = require('./data-conversion/utils/archive-insert-queue').InsertQueue;
+
+
+var totalToInsert = 4161;
+var insertedCount = 0;
+
+
+function onPageCompleted(err, taskForXref) {
+    if (err) {
+        console.log('PagesQueue: ERROR!');
+        process.exit(1);
+    }
+    XrefQueue.push(taskForXref, onXrefCompleted);
+}
+
+function onXrefCompleted(err, taskForAuthors) {
+    if (err) {
+        console.log('XrefQueue: ERROR!');
+        process.exit(1);
+    }
+    AuthorsQueue.push(taskForAuthors, onAuthorCompleted);
+}
+
+function onAuthorCompleted(err, taskForInsert) {
+    if (err) {
+        console.log('AuthorsQueue: ERROR!');
+        process.exit(1);
+    }
+    InsertQueue.push(taskForInsert, onInsertCompleted);
+}
+
+function onInsertCompleted(err) {
+    if (err) {
+        console.log('InsertQueue: ERROR!');
+        process.exit(1);
+    }
+    insertedCount += 1;
+    if (insertedCount === totalToInsert) {
+        console.log('ALL DONE!');
+        process.exit(0);
+    }
+}
 
 
 MongoClient.connect(config.mongoURL, function(err, db) {
@@ -31,19 +75,12 @@ MongoClient.connect(config.mongoURL, function(err, db) {
             console.log('Could not count records to process');
             process.exit(2);
         }
-        var converter = new ConversionManager();
-        converter.on('countProcessed', function(countProcessed) {
-            if (countProcessed === toProcess) {
-                console.log('ALL DONE!');
-                process.exit(0);
-            }
-        });
         archiveAtricles.forEach(function(article) {
             var task = {
                 db: db,
                 article: article
             };
-            converter.emit('getPages', task);
+            PagesQueue.push(task, onPageCompleted);
         }, function(err) {
             if (err) {
                 console.log('Could not create articles');
