@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/n-sider/nstitute-api#readme",
   "dependencies": {
+    "JSONStream": "^1.0.7",
     "async": "1.5.2",
     "fast-csv": "1.0.0",
     "mongodb": "2.1.4",
