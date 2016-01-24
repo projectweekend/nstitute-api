@@ -2,7 +2,7 @@ var fs = require('fs');
 var csv = require('fast-csv');
 var async = require('async');
 var MongoClient = require('mongodb').MongoClient;
-var config = require('./data-conversion/config');
+var config = require('./app/config');
 var MongoCollectionWriter = require('./data-conversion/utils/database').MongoCollectionWriter;
 
 var csvConfig = {
