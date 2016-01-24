@@ -1,0 +1,9 @@
+.drone.yml
+.git
+.gitignore
+Dockerfile
+README.md
+docker-compose.yml
+local_migrations.sh
+sql/
+build_secrets.yml
