@@ -1,12 +1,24 @@
 var expect = require('chai').expect;
 var supertest = require('supertest');
-var api = supertest( 'http://192.168.99.101:3000' );
-// var api = supertest(server);
+var MongoClient = require('mongodb').MongoClient;
+var config = require('../app/config');
+var api = require('../app/api');
+var nstitute;
+
+before(function(done) {
+    MongoClient.connect(config.mongoURL, function(err, db) {
+        if (err) {
+            return done(err);
+        }
+        nstitute = supertest(api.start(db));
+        done();
+    });
+});
 
 
 describe("get list of archive articles", function () {
     it("responds with articles", function (done) {
-        api.get('/nsider-archive')
+        nstitute.get('/nsider-archive')
             .expect(200)
             .end(function(err, res) {
                 if (err) {

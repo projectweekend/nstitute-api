@@ -19,11 +19,9 @@ docker-compose up
 ```
 
 ### Running tests
-After launching the application with `docker-compose up`, run [Mocha](https://mochajs.org/) integration tests in a separate terminal window:
 ```
-mocha
+docker-compose run app npm test
 ```
-This requires that Mocha and the projects `devDependencies` be installed on the host machine.
 
 
 ## Data Conversion
