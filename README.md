@@ -25,14 +25,14 @@ docker-compose up
 Scripts used to convert data from legacy website to MongoDB are located in `./data-conversion`. You only need to set a MONGO_URL environment variable if you wish to run any of these items on a remote database. It will run locally in a Docker Compose database by default.
 
 
-### Import Nsider (old site) to staging collections
+### Import N-Sider (old site) to staging collections
 
 ```
 docker-compose run app node import_data.js
 ```
 
 
-### Convert imported Nsider (old site) data to nsider_archive collection
+### Convert imported N-Sider data to nsider_archive collection
 
 ```
 docker-compose run app node convert_data.js
@@ -43,7 +43,7 @@ docker-compose run app node convert_data.js
 ## API Routes
 
 
-### Get a list Nsider archive articles
+### Get a list N-Sider archive articles
 
 **GET:**
 ```
@@ -99,7 +99,7 @@ docker-compose run app node convert_data.js
 * `400` if invalid query parameters
 
 
-### Get a Nsider archive article
+### Get a N-Sider archive article
 
 **GET:**
 ```
