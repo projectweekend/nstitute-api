@@ -18,9 +18,14 @@ docker-compose build
 docker-compose up
 ```
 
-### Running tests
+### Run tests
 ```
 docker-compose run app npm test
+```
+
+### Run tests with coverage
+```
+docker-compose run app npm run coverage
 ```
 
 

@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node server.js",
-    "test": "mocha app/tests"
+    "test": "mocha app/tests",
+    "coverage": "istanbul cover _mocha app/tests -- -R spec"
   },
   "name": "nstitute-api",
   "version": "1.0.0",
