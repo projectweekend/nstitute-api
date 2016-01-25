@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
 var supertest = require('supertest');
 var MongoClient = require('mongodb').MongoClient;
-var config = require('../app/config');
-var api = require('../app/api');
+var config = require('../config');
+var api = require('../api');
 var nstitute;
 
 before(function(done) {
