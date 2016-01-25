@@ -1,16 +1,14 @@
 var expect = require('chai').expect;
 var supertest = require('supertest');
-var MongoClient = require('mongodb').MongoClient;
-var config = require('../config');
-var api = require('../api');
+var startApp = require('../utils/testing').startApp;
 var nstitute;
 
 before(function(done) {
-    MongoClient.connect(config.mongoURL, function(err, db) {
+    startApp(function(err, app) {
         if (err) {
             return done(err);
         }
-        nstitute = supertest(api.start(db));
+        nstitute = supertest(app);
         done();
     });
 });
