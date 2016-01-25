@@ -10,6 +10,7 @@ var exports = module.exports = {};
 // in callback for use with supertest
 exports.startApp = function(done) {
     MongoClient.connect(config.mongoURL, function(err, db) {
+        /* istanbul ignore if */
         if (err) {
             return done(err);
         }

@@ -11,6 +11,7 @@ exports.get = function(req, res, next) {
         finished: 'Y',
         nsider_id: nsiderID
     }).limit(1).next(function(err, article) {
+        /* istanbul ignore if */
         if (err) {
             return next(err);
         }

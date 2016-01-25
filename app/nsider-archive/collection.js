@@ -8,6 +8,7 @@ exports.get = function(req, res, next) {
     }).sort({
         published_date: -1
     }).limit(req.take).skip(req.skip).toArray(function(err, articles) {
+        /* istanbul ignore if */
         if (err) {
             return next(err);
         }
