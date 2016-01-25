@@ -7,6 +7,7 @@ app:
         - ./package.json:/src/package.json
         - ./server.js:/src/server.js
         - ./app:/src/app
+        - ./test:/src/test
         # Data conversion stuff
         - ./data-conversion:/src/data-conversion
         - ./data-conversion/nsider-archive/import_data.js:/src/import_data.js

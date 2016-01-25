@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha"
   },
   "name": "nstitute-api",
   "version": "1.0.0",
