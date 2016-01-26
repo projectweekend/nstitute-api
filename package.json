@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha app/tests",
+    "coverage": "istanbul cover _mocha app/tests -- -R spec"
   },
   "name": "nstitute-api",
   "version": "1.0.0",
@@ -21,5 +23,11 @@
     "fast-csv": "1.0.0",
     "mongodb": "2.1.4",
     "restify": "4.0.3"
+  },
+  "devDependencies": {
+    "chai": "3.4.1",
+    "istanbul": "0.4.2",
+    "mocha": "2.3.4",
+    "supertest": "1.1.0"
   }
 }

@@ -18,6 +18,15 @@ docker-compose build
 docker-compose up
 ```
 
+### Run tests
+```
+docker-compose run app npm test
+```
+
+### Run tests with coverage
+```
+docker-compose run app npm run coverage
+```
 
 
 ## Data Conversion
@@ -54,6 +63,7 @@ docker-compose run app node convert_data.js
 
 * `skip` - Number of records to skip. Default: 0
 * `take` - Number of records to take. Default: 10
+* `staffID` - String to filter by `authors.nsider_staff_id`. Optional.
 
 **Response:**
 ```json
