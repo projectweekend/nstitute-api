@@ -1,6 +1,7 @@
 var restify = require('restify');
 var middleware = require('./middleware');
 var nsiderArchiveCollection = require('./nsider-archive/collection');
+var nsiderArchiveByStaff = require('./nsider-archive/by-staff');
 var nsiderArchiveItem = require('./nsider-archive/item');
 
 
@@ -23,6 +24,7 @@ function start(db) {
 
     // add routes
     server.get('/nsider-archive', nsiderArchiveCollection.get);
+    server.get('/nsider-archive/staff/:staffID', nsiderArchiveByStaff.get);
     server.get('/nsider-archive/:nsiderID', nsiderArchiveItem.get);
 
     // start

@@ -7,7 +7,8 @@ exports.get = function(req, res, next) {
         'finished': 'Y',
         'published_date': {
             '$ne': '0000-00-00 00:00:00'
-        }
+        },
+        'authors.nsider_staff_id': req.params.staffID
     };
 
     var sort = {

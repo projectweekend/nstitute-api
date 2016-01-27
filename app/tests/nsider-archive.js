@@ -81,7 +81,7 @@ describe("get list of archive articles with take above max", function () {
 
 describe("get list of archive by authors.nsider_staff_id", function () {
     it("responds with articles for selected author only", function (done) {
-        nstitute.get('/nsider-archive?staffID=2')
+        nstitute.get('/nsider-archive/staff/2')
             .expect(200)
             .end(function(err, res) {
                 if (err) {
@@ -111,7 +111,7 @@ describe("get list of archive by authors.nsider_staff_id", function () {
 
 describe("get list of archive by authors.nsider_staff_id that does not exist", function () {
     it("responds with no articles", function (done) {
-        nstitute.get('/nsider-archive?staffID=99999')
+        nstitute.get('/nsider-archive/staff/99999')
             .expect(200)
             .end(function(err, res) {
                 if (err) {
