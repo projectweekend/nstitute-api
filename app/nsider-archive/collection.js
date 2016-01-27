@@ -6,7 +6,7 @@ exports.get = function(req, res, next) {
     var filter = {
         'finished': 'Y',
         'published_date': {
-            '$ne': '0000-00-00 00:00:00'
+            '$ne': null
         }
     };
 

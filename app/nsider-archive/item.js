@@ -8,8 +8,11 @@ exports.get = function(req, res, next) {
     var nsiderID = req.params.nsiderID;
     var collection = req.db.collection('nsider_archive');
     var cursor = collection.find({
-        finished: 'Y',
-        nsider_id: nsiderID
+        'finished': 'Y',
+        'published_date': {
+            '$ne': null
+        },
+        'nsider_id': nsiderID
     }).limit(1).next(function(err, article) {
         /* istanbul ignore if */
         if (err) {

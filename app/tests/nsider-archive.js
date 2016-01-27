@@ -36,8 +36,8 @@ describe("get list of archive articles", function () {
                 expect(article.linked_type).to.be.a('string');
                 expect(article.linked_id).to.be.a('string');
                 expect(article.finished).to.be.a('string');
-                expect(article.date_created).to.be.a('string');
-                expect(article.date_updated).to.be.a('string');
+                expect(article.date_created).to.be.null;
+                expect(article.date_updated).to.be.null;
                 expect(article.deleted).to.be.a('string');
                 expect(article.pages).to.be.an('array');
                 expect(article.authors).to.be.an('array');
@@ -144,8 +144,8 @@ describe("get a single article that exists", function () {
                 expect(article.linked_type).to.be.a('string');
                 expect(article.linked_id).to.be.a('string');
                 expect(article.finished).to.be.a('string');
-                expect(article.date_created).to.be.a('string');
-                expect(article.date_updated).to.be.a('string');
+                expect(article.date_created).to.be.null;
+                expect(article.date_updated).to.be.null;
                 expect(article.deleted).to.be.a('string');
                 expect(article.pages).to.be.an('array');
                 expect(article.authors).to.be.an('array');
