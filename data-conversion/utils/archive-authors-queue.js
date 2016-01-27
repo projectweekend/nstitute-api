@@ -1,7 +1,15 @@
 var async = require('async');
+var dateOrNull = require('../utils/dates').dateOrNull;
 
 
 var exports = module.exports = {};
+
+
+function fixAuthorDates(author) {
+    author.date_created = dateOrNull(author.date_created);
+    author.date_updated = dateOrNull(author.date_updated);
+    return author;
+}
 
 
 exports.AuthorsQueue = async.queue(function (task, callback) {
@@ -32,7 +40,7 @@ exports.AuthorsQueue = async.queue(function (task, callback) {
         if (err) {
             return callback(err);
         }
-        task.article.authors = authors;
+        task.article.authors = authors.map(fixAuthorDates);
         return callback(null, task);
     });
 }, 2);
