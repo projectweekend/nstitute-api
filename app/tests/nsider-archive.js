@@ -110,17 +110,13 @@ describe("get list of archive by authors.nsider_staff_id", function () {
 
 
 describe("get list of archive by authors.nsider_staff_id that does not exist", function () {
-    it("responds with no articles", function (done) {
+    it("responds with a 404", function (done) {
         nstitute.get('/nsider-archive/staff/99999')
-            .expect(200)
+            .expect(404)
             .end(function(err, res) {
                 if (err) {
                     return done(err);
                 }
-
-                expect(res.body).to.be.an('array');
-                expect(res.body.length).to.equal(0);
-
                 done();
             });
     });

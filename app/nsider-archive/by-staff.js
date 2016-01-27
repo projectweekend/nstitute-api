@@ -1,3 +1,6 @@
+var restify = require('restify');
+
+
 var exports = module.exports = {};
 
 
@@ -24,6 +27,9 @@ exports.get = function(req, res, next) {
         /* istanbul ignore if */
         if (err) {
             return next(err);
+        }
+        if (!articles.length) {
+            return next(new restify.errors.NotFoundError());
         }
         return res.send(200, articles);
     }

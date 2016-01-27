@@ -163,6 +163,7 @@ docker-compose run app node convert_data.js
 **Status Codes:**
 * `200` if successful
 * `400` if invalid query parameters
+* `404` if nsider_staff_id does not exist
 
 
 
