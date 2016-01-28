@@ -39,7 +39,7 @@ exports.get = function(req, res, next) {
     };
 
     var collection = req.db.collection('nsider_archive');
-    var cursor = collection.aggregate([
+    collection.aggregate([
         publishedFilter,
         project,
         dateFilter,
