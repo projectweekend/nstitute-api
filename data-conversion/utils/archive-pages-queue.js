@@ -1,7 +1,15 @@
 var async = require('async');
+var dateOrNull = require('../utils/dates').dateOrNull;
 
 
 var exports = module.exports = {};
+
+
+function fixPageDates(page) {
+    page.date_created = dateOrNull(page.date_created);
+    page.date_updated = dateOrNull(page.date_updated);
+    return page;
+}
 
 
 exports.PagesQueue = async.queue(function (task, callback) {
@@ -24,7 +32,7 @@ exports.PagesQueue = async.queue(function (task, callback) {
         if (err) {
             return callback(err);
         }
-        task.article.pages = pages;
+        task.article.pages = pages.map(fixPageDates);
         return callback(null, task);
     });
 }, 2);

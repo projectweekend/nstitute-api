@@ -5,6 +5,7 @@ var PagesQueue = require('./data-conversion/utils/archive-pages-queue').PagesQue
 var XrefQueue = require('./data-conversion/utils/archive-xref-queue').XrefQueue;
 var AuthorsQueue = require('./data-conversion/utils/archive-authors-queue').AuthorsQueue;
 var InsertQueue = require('./data-conversion/utils/archive-insert-queue').InsertQueue;
+var dateOrNull = require('./data-conversion/utils/dates').dateOrNull;
 
 
 var totalToInsert = 4161;
@@ -19,6 +20,7 @@ function onPageCompleted(err, taskForXref) {
     XrefQueue.push(taskForXref, onXrefCompleted);
 }
 
+
 function onXrefCompleted(err, taskForAuthors) {
     if (err) {
         console.log('XrefQueue: ERROR!');
@@ -27,6 +29,7 @@ function onXrefCompleted(err, taskForAuthors) {
     AuthorsQueue.push(taskForAuthors, onAuthorCompleted);
 }
 
+
 function onAuthorCompleted(err, taskForInsert) {
     if (err) {
         console.log('AuthorsQueue: ERROR!');
@@ -34,6 +37,7 @@ function onAuthorCompleted(err, taskForInsert) {
     }
     InsertQueue.push(taskForInsert, onInsertCompleted);
 }
+
 
 function onInsertCompleted(err) {
     if (err) {
@@ -76,6 +80,9 @@ MongoClient.connect(config.mongoURL, function(err, db) {
             process.exit(2);
         }
         archiveAtricles.forEach(function(article) {
+            article.published_date = dateOrNull(article.published_date);
+            article.date_created = dateOrNull(article.date_created);
+            article.date_updated = dateOrNull(article.date_updated);
             var task = {
                 db: db,
                 article: article

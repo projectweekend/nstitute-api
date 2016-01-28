@@ -1,3 +1,6 @@
+var restify = require('restify');
+
+
 var exports = module.exports = {};
 
 
@@ -7,7 +10,8 @@ exports.get = function(req, res, next) {
         'finished': 'Y',
         'published_date': {
             '$ne': null
-        }
+        },
+        'authors.nsider_staff_id': req.params.staffID
     };
 
     var sort = {
@@ -23,6 +27,9 @@ exports.get = function(req, res, next) {
         /* istanbul ignore if */
         if (err) {
             return next(err);
+        }
+        if (!articles.length) {
+            return next(new restify.errors.NotFoundError());
         }
         return res.send(200, articles);
     }
