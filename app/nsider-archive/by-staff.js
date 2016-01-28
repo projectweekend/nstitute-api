@@ -1,4 +1,7 @@
 var restify = require('restify');
+var defaultFields = require('./data').defaultFields;
+var defaultFilter = require('./data').defaultFilter;
+var defaultSort = require('./data').defaultSort;
 
 
 var exports = module.exports = {};
@@ -6,22 +9,18 @@ var exports = module.exports = {};
 
 exports.get = function(req, res, next) {
 
-    var filter = {
-        'finished': 'Y',
-        'published_date': {
-            '$ne': null
-        },
-        'authors.nsider_staff_id': req.params.staffID
-    };
+    var fields = defaultFields();
 
-    var sort = {
-        published_date: -1
-    };
+    var filter = defaultFilter();
+    filter['authors.nsider_staff_id'] = req.params.staffID;
+
+    var sort = defaultSort();
 
     var collection = req.db.collection('nsider_archive');
-    var cursor = collection.find(filter).sort(sort)
-                    .limit(req.take).skip(req.skip)
-                    .toArray(sendResponse);
+    collection.find(filter)
+        .project(fields).sort(sort)
+        .limit(req.take).skip(req.skip)
+        .toArray(sendResponse);
 
     function sendResponse(err, articles) {
         /* istanbul ignore if */
