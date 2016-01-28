@@ -1,19 +1,23 @@
 var restify = require('restify');
+var defaultFields = require('./data').defaultFields;
+var defaultFilter = require('./data').defaultFilter;
+var defaultSort = require('./data').defaultSort;
 
 
 var exports = module.exports = {};
 
 
 exports.get = function(req, res, next) {
-    var nsiderID = req.params.nsiderID;
+
+    var fields = defaultFields();
+
+    var filter = defaultFilter();
+    filter.nsider_id = req.params.nsiderID;
+
     var collection = req.db.collection('nsider_archive');
-    var cursor = collection.find({
-        'finished': 'Y',
-        'published_date': {
-            '$ne': null
-        },
-        'nsider_id': nsiderID
-    }).limit(1).next(function(err, article) {
+    collection.find(filter).project(fields).limit(1).next(sendResponse);
+
+    function sendResponse(err, article) {
         /* istanbul ignore if */
         if (err) {
             return next(err);
@@ -22,5 +26,5 @@ exports.get = function(req, res, next) {
             return next(new restify.errors.NotFoundError());
         }
         return res.send(200, article);
-    });
+    }
 };
