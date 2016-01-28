@@ -13,10 +13,10 @@ exports.get = function(req, res, next) {
     var sort = defaultSort();
 
     var collection = req.db.collection('nsider_archive');
-    var cursor = collection.find(filter)
-                    .project(fields).sort(sort)
-                    .limit(req.take).skip(req.skip)
-                    .toArray(sendResponse);
+    collection.find(filter)
+        .project(fields).sort(sort)
+        .limit(req.take).skip(req.skip)
+        .toArray(sendResponse);
 
     function sendResponse(err, articles) {
         /* istanbul ignore if */
