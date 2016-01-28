@@ -21,7 +21,6 @@ exports.get = function(req, res, next) {
     function sendResponse(err, articles) {
         /* istanbul ignore if */
         if (err) {
-            console.log(err);
             return next(err);
         }
         return res.send(200, articles);
