@@ -1,27 +1,27 @@
+var defaultFields = require('./data').defaultFields;
+var defaultFilter = require('./data').defaultFilter;
+var defaultSort = require('./data').defaultSort;
+
+
 var exports = module.exports = {};
 
 
 exports.get = function(req, res, next) {
 
-    var filter = {
-        'finished': 'Y',
-        'published_date': {
-            '$ne': null
-        }
-    };
-
-    var sort = {
-        published_date: -1
-    };
+    var fields = defaultFields();
+    var filter = defaultFilter();
+    var sort = defaultSort();
 
     var collection = req.db.collection('nsider_archive');
-    var cursor = collection.find(filter).sort(sort)
+    var cursor = collection.find(filter)
+                    .project(fields).sort(sort)
                     .limit(req.take).skip(req.skip)
                     .toArray(sendResponse);
 
     function sendResponse(err, articles) {
         /* istanbul ignore if */
         if (err) {
+            console.log(err);
             return next(err);
         }
         return res.send(200, articles);
