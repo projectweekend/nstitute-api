@@ -3,6 +3,7 @@ var middleware = require('./middleware');
 var nsiderArchiveCollection = require('./nsider-archive/collection');
 var nsiderArchiveByStaff = require('./nsider-archive/by-staff');
 var nsiderArchiveByYear = require('./nsider-archive/by-year');
+var nsiderArchiveByYearMonth = require('./nsider-archive/by-year-month');
 var nsiderArchiveItem = require('./nsider-archive/item');
 
 
@@ -27,6 +28,7 @@ function start(db) {
     server.get('/nsider-archive', nsiderArchiveCollection.get);
     server.get('/nsider-archive/staff/:staffID', nsiderArchiveByStaff.get);
     server.get('/nsider-archive/year/:publishedYear', nsiderArchiveByYear.get);
+    server.get('/nsider-archive/year/:publishedYear/month/:publishedMonth', nsiderArchiveByYearMonth.get);
     server.get('/nsider-archive/:nsiderID', nsiderArchiveItem.get);
 
     // start
