@@ -8,13 +8,20 @@ var exports = module.exports = {};
 
 exports.get = function(req, res, next) {
 
-    var fields = defaultFields();
-    var filter = defaultFilter();
-    var sort = defaultSort();
+    var queryFields = defaultFields();
+    var queryFilter = defaultFilter();
+    var querySort = defaultSort();
+
+    var keyword = req.query.keyword;
+    if (keyword) {
+        queryFilter.title = {
+            '$regex': new RegExp('.*' + keyword + '.*', 'i')
+        };
+    }
 
     var collection = req.db.collection('nsider_archive');
-    collection.find(filter)
-        .project(fields).sort(sort)
+    collection.find(queryFilter)
+        .project(queryFields).sort(querySort)
         .limit(req.take).skip(req.skip)
         .toArray(sendResponse);
 
