@@ -63,7 +63,7 @@ docker-compose run app node convert_data.js
 
 * `skip` - Number of records to skip. Default: 0
 * `take` - Number of records to take. Default: 10
-* 'keyword' - String to filter by `title`. Optional.
+* `keyword` - String to filter by `title`. Optional.
 
 **Response:**
 ```json
