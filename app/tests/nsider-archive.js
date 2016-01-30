@@ -89,7 +89,7 @@ describe("nsider-archive", function () {
 
     describe("get list of articles with title keyword", function () {
         it("responds with only articles that have keyword in title", function (done) {
-            nstitute.get('/nsider-archive?keyword=fantasy')
+            nstitute.get('/nsider-archive?keyword=zelda+ocarina')
                 .expect(200)
                 .end(function(err, res) {
                     if (err) {
@@ -97,8 +97,11 @@ describe("nsider-archive", function () {
                     }
                     expect(res.body).to.be.an('array');
                     res.body.forEach(function(article) {
-                        var index = article.title.toLowerCase().indexOf('fantasy');
-                        expect(index).to.not.equal(-1);
+                        var words = ['zelda', 'ocarina'];
+                        words.forEach(function(word) {
+                            var index = article.title.toLowerCase().indexOf(word);
+                            expect(index).to.not.equal(-1);
+                        });
                     });
                     done();
                 });

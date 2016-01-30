@@ -14,8 +14,11 @@ exports.get = function(req, res, next) {
 
     var keyword = req.query.keyword;
     if (keyword) {
+        var items = keyword.split(' ').map(function(word) {
+            return '(?=.*' + word + ')';
+        });
         queryFilter.title = {
-            '$regex': new RegExp('.*' + keyword + '.*', 'i')
+            '$regex': new RegExp(items.join('') + '.*', 'i')
         };
     }
 
