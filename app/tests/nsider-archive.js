@@ -87,6 +87,28 @@ describe("nsider-archive", function () {
     });
 
 
+    describe("get list of articles with title keyword", function () {
+        it("responds with only articles that have keyword in title", function (done) {
+            nstitute.get('/nsider-archive?keyword=zelda+ocarina')
+                .expect(200)
+                .end(function(err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    expect(res.body).to.be.an('array');
+                    res.body.forEach(function(article) {
+                        var words = ['zelda', 'ocarina'];
+                        words.forEach(function(word) {
+                            var index = article.title.toLowerCase().indexOf(word);
+                            expect(index).to.not.equal(-1);
+                        });
+                    });
+                    done();
+                });
+        });
+    });
+
+
     describe("get list of articles by authors.nsider_staff_id", function () {
         it("responds with articles for selected author only", function (done) {
             nstitute.get('/nsider-archive/staff/2')
