@@ -2,20 +2,15 @@ mongo:
     image: mongo
 app:
     build: .
-    command: node server.js
+    command: node ./keystone.js
     volumes:
         # API stuff
-        - ./package.json:/src/package.json
-        - ./server.js:/src/server.js
         - ./app:/src/app
-        - ./coverage:/src/coverage
-        # Data conversion stuff
-        - ./data-conversion:/src/data-conversion
-        - ./data-conversion/nsider-archive/import_data.js:/src/import_data.js
-        - ./data-conversion/nsider-archive/convert_data.js:/src/convert_data.js
-        - ./data-conversion/nsider-archive/check_data.js:/src/check_data.js
-
     ports:
         - "3000:3000"
     links:
         - mongo
+    environment:
+        PORT: 3000
+        IP: 0.0.0.0
+        MONGO_URI: mongodb://mongo/test
