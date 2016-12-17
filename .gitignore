@@ -34,3 +34,4 @@ node_modules
 
 # Custom Stuff
 build_secrets.yml
+*.zip
